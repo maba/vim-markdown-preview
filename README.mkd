@@ -1,7 +1,7 @@
 ## vim-markdown-preview
 
-_vim-markdown-preview_ adds the option to preview markdown documents in the browser from the 
-vim editor.  
+_vim-markdown-preview_ adds the option to preview markdown documents in the 
+browser from the vim editor.  
 The web page it opens is loosely styled on how GitHub would render README.mkd.
 
 ## Install
@@ -14,7 +14,9 @@ The web page it opens is loosely styled on how GitHub would render README.mkd.
 
 ## Usage
 
-Type `:Mm` as a command for a preview of your markdown document.
+Send vim the command `:Mm` for a preview of your markdown document.  
+Alternatively, bind `:Mm` to a key binding: 
+`map <leader>p :Mm<CR>` 
 
 
 ## Dependencies
@@ -25,22 +27,35 @@ Type `:Mm` as a command for a preview of your markdown document.
 
 ## OSX
 
-_vim-markdown-preview_ was written to run on OSX, and it will work w/o problems.  
-I recommend the safari browser because it will not open new tabs needlessly if a document
-is already loaded in an existing tab/window.
+_vim-markdown-preview_ was written to run on OSX, and it will work w/o 
+problems.  
+I recommend the safari browser because it will not open new tabs needlessly 
+if a document is already loaded in an existing tab/window.
 
 ## Linux/Others
 
 _vim-markdown-preview_ is tied to the OSX command `open`.  
-You will need to replace it with something else - firefox-bin, for example, for it to work 
-on your operating system.
+You will need to replace it with something else - firefox-bin, for example, 
+for it to work on your operating system.
 
 ## Credit
-This is a modified version of the script I found [here](http://mathias-biilmann.net/2009/1/markdown-preview-in-vim)
+
+* Mathias Billman  
+  This is a heavily modified version of the vim script originally written by
+  Mathias Billman and found 
+  [here](http://mathias-biilmann.net/2009/1/markdown-preview-in-vim).
+
+* [moreweb](http://github.com/moreweb)  
+  Contributor.  
+
+* [maba](http://github.com/maba)  
+  Contributor. 
+
 
 ## Bugs
 
-No known bugs right now. [Found a bug?](http://github.com/robgleeson/vim-markdown-preview/issues).
+No known bugs right now. 
+[Found a bug?](http://github.com/robgleeson/vim-markdown-preview/issues).
 
 ## Contact
 
