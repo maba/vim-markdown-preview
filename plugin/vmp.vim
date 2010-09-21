@@ -1,6 +1,7 @@
 function! PreviewMKD()
   ruby << RUBY
 
+
     VIM.evaluate('&runtimepath').split(',').each do |path|
       $LOAD_PATH.unshift(File.join(path, 'plugin', 'vim-markdown-preview'))
     end
@@ -13,53 +14,10 @@ function! PreviewMKD()
 
     VIM::Buffer.current.name.nil? ? (name = 'No Name.md') : (name = Vim::Buffer.current.name)
 
-    style = <<-STYLE
-    <style type="text/css">
-    body div#content {
-      margin            : 0 auto;
-      width             : 920px;
-      background-color  : #f8f8f8;
-      padding           : .7em;
-      font-size         : 13.34px;
-      font-family       : verdana, sans-serif;
-      border            : 1px #E0E0E0 solid;
-    }
-
-    body div#content h2, body div#content h3, body div#content h4 {
-     padding-top  : 10px;
-     border-top   : 4px solid #E0E0E0;
-    }
-
-    body div#content pre {
-      padding          : 5px;
-      border-style     : solid;
-      border-width     : 1px;
-      border-color     : #E0E0E0;
-      background-color : #F8F8FF;
-    }
-
-    body div#content pre code {
-      padding          : 5px;
-      background-color : #F8F8FF;
-      border           : none;
-    }
-
-    body div#content code {
-      font-family      : courier, fixed;
-      display          : inline-block;
-      padding          : 0px 2px 0px 2px;
-      background-color : #F8F8FF;
-      border           : 1px #E0E0E0 solid;
-    }
-
-    body h4#title {
-      font-family : verdana, sans-serif;
-      display     : block;
-      margin      : 0 auto;
-      width       : 920px;
-    }
-    </style>
-    STYLE
+    preview_path = VIM.evaluate('&runtimepath').split(',').select{|path| path =~ /vim-markdown-preview/}.first
+    "cssfile = File.open("#{preview_path}/plugin/markdown-preview.css")
+    cssfile = File.open("#{preview_path}/stylesheets/safari-reader.css")
+    style = cssfile.read
 
     layout = <<-LAYOUT
   <!DOCTYPE html
@@ -68,18 +26,22 @@ function! PreviewMKD()
     <html xmlns="http://www.w3.org/1999/xhtml">
       <head>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-      #{style}
+      <style type="text/css">
+        #{style}
+      </style>
 
       <title> #{File.basename(name)} </title>
       </head>
       <body>
 
-        <h4 id="title">
-          #{File.basename(name)}
-        </h4>
-
-        <div id="content">
+        <div id="container">
+        <div id="centered">
+        <div id="article">
+        <div class="page">
           #{Kramdown::Document.new(text).to_html}
+        </div>
+        </div>
+        </div>
         </div>
       </body>
     </html>
@@ -91,7 +53,12 @@ function! PreviewMKD()
     else
       file = File.join('/tmp', File.basename(name) + '.html')
       File.open('%s' % [ file ], 'w') { |f| f.write(layout) }
-      Vim.command("silent !open '%s'" % [ file ])
+      # Open the html file
+      # Vim.command("silent !open '%s'" % [ file ])
+      # Create and open a PDF file
+      pdffile = File.join('/tmp', File.basename(name) + '.pdf')
+      system("wkpdf --source #{file} --output #{pdffile}")
+      Vim.command("silent !open '%s'" % [ pdffile ])
     end
 RUBY
 endfunction
